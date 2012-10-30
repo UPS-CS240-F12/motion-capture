@@ -1,0 +1,8 @@
+﻿<Gestures GestureResetTimeout="500">
+  <Gesture Description="Moving" MaxExecutionTime="1000" MappedKeyCode="Moving">
+    <GestureComponent FirstJoint="WristLeft" SecondJoint="ShoulderLeft" EndingRelationship="BelowAndLeft" BeginningRelationship="AboveAndLeft" />
+  </Gesture>
+  <Gesture Description="Jumping" MaxExecutionTime="1000" MappedKeyCode="Jumping">
+    <GestureComponent FirstJoint="WristRight" SecondJoint="ShoulderRight" EndingRelationship="BelowAndRight" BeginningRelationship="AboveAndRight" />
+  </Gesture>
+</Gestures>

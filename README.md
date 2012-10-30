@@ -1,4 +1,1 @@
-motion-capture
-==============
-
-The Motion Capture (Kinect) repository
+Motion Capture Development Zone. Please be aware of flailing arms and legs.

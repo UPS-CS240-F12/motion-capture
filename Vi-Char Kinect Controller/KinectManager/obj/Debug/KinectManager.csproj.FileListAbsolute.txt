@@ -1,0 +1,4 @@
+C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectManager\bin\Debug\KinectManager.dll
+C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectManager\bin\Debug\KinectManager.pdb
+C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectManager\obj\Debug\KinectManager.dll
+C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectManager\obj\Debug\KinectManager.pdb

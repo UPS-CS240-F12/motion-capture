@@ -1,0 +1,33 @@
+﻿namespace GestureFramework
+{
+    public enum JointRelationship
+    {
+        None,
+        Above,
+        Below,
+        LeftOf,
+        RightOf,
+        Front,
+        Behind,
+        AboveAndRight,
+        BelowAndRight,
+        AboveAndLeft,
+        BelowAndLeft,
+        FrontAbove,
+        FrontBelow,
+        FrontLeftOf,
+        FrontRightOf,
+        FrontAboveAndRight,
+        FrontBelowAndRight,
+        FrontAboveAndLeft,
+        FrontBelowAndLeft,
+        BehindAbove,
+        BehindBelow,
+        BehindLeftOf,
+        BehindRightOf,
+        BehindAboveAndRight,
+        BehindBelowAndRight,
+        BehindAboveAndLeft,
+        BehindBelowAndLeft
+    }
+}
