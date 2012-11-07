@@ -24,10 +24,17 @@ namespace Controller_Core
             set;
         }
 
+        public Player Player
+        {
+            get;
+            set;
+        }
+
         private DateTime lastActivation;
         private TimeSpan activationDuration;
         private int value;
         private GestureType activatingGesture;
+        private Player activatingPlayer;
 
         public ControllerState(int activationDuration, GestureType activatingGesture)
         {
@@ -38,9 +45,9 @@ namespace Controller_Core
         }
 
         //Activates the controller state
-        public void Activate(GestureType type)
+        public void Activate(GestureType type, int activatingSkeletonID)
         {
-            if (type == activatingGesture)
+            if (type == activatingGesture && activatingPlayer.GetId() == activatingSkeletonID)
             {
                 lastActivation = DateTime.Now;
                 Console.WriteLine("Activating Gesture: " + type.ToString() + "@" + lastActivation);

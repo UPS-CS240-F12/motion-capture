@@ -8,7 +8,7 @@
 // hit testing against a set of segments provided by the Kinect NUI, and
 // have shapes react accordingly.
 
-namespace Controller_Core
+namespace GestureFramework
 {
     using System;
     using Microsoft.Kinect;
