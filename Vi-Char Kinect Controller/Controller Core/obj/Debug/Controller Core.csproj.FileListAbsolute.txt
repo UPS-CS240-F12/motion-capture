@@ -10,3 +10,15 @@ C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Con
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Kinect.Toolkit.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Debug\Controller Core.csprojResolveAssemblyReference.cache
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Debug\Controller Core.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Controller Core.dll
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Controller Core.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\GestureFramework.dll
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Kinect.Toolkit.dll
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Coding4Fun.Kinect.WinForm.dll
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\GestureFramework.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Debug\Microsoft.Kinect.Toolkit.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Debug\Controller Core.dll

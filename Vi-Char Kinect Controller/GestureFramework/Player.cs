@@ -4,7 +4,7 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
-namespace Controller_Core
+namespace GestureFramework
 {
     using System;
     using System.Collections.Generic;

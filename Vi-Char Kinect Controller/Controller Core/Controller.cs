@@ -50,6 +50,7 @@ namespace Controller_Core
 
         private GestureMap gestureMap;
         private Dictionary<int, GestureMapState> gestureMaps;
+        private List<Player> allPlayers;
 
         private ControllerState moving;
         private ControllerState turning;
@@ -59,9 +60,12 @@ namespace Controller_Core
         //Creates the ViChar Controller, setting all Controller State Activation Durations to the same value
         public ViCharController(int activationDuration=1000)
         {
+            ManageSensor();
+
             gestureMap = new GestureMap();
             gestureMaps = new Dictionary<int, GestureMapState>();
-            ManageSensor();
+            allPlayers = new List<Player>();
+
             //Any Controller states must be registered (See registerControllerStates())
             moving = new ControllerState(activationDuration, GestureType.Moving);
             turning = new ControllerState(activationDuration, GestureType.Turning);
@@ -169,7 +173,7 @@ namespace Controller_Core
                     }
 
                     //Check for a gesture. If one is found to be completed, an event will be fired and handled elsewhere.
-                    bool gestureComplete = gestureMaps[sd.TrackingId].Evaluate(sd, false, 640, 480);
+                    bool gestureComplete = gestureMaps[sd.TrackingId].Evaluate(sd, 640, 480);
                     if (gestureComplete)
                     {
                         gestureMaps[sd.TrackingId].ResetAll(sd);
@@ -181,9 +185,8 @@ namespace Controller_Core
         //If you add a controller state, it must be added to this Registration list. If not, it will never activate. 
         private void registerControllerStates(GestureMapState state)
         {
-            state.RegisterGestureResult(moving.Activate);
-            state.RegisterGestureResult(turning.Activate);
-            state.RegisterGestureResult(jumping.Activate);
+            Action<GestureType, int> movingActivate = moving.Activate;
+            state.RegisterGestureResult(movingActivate);
         }
 
     }
