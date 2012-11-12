@@ -23,6 +23,11 @@ namespace GestureFramework
             //template.Components.Add(new GestureComponent(JointType.FirstJoint, JointType.SecondJoint, 
             //    JointRelationship.EndingRelationship, JointRelationship.BeginningRelationship));
             //Items.Add(template);
+            
+            Gesture template = new Gesture("pointing", 1000, GestureType.Pointing);
+            template.Components.Add(new GestureComponent(JointType.HandRight, JointType.Head, 
+                JointRelationship.FrontBelow, JointRelationship.BehindAbove));
+            Items.Add(template);
 
             Gesture moving = new Gesture("moving", 1000, GestureType.Moving);
             moving.Components.Add(new GestureComponent(JointType.HandRight, JointType.ElbowRight, 
@@ -50,6 +55,7 @@ namespace GestureFramework
         Moving,
         Jumping,
         Turning,
+        Pointing,
         None
     }
 }
