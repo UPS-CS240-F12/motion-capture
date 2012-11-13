@@ -15,7 +15,7 @@ namespace GestureFramework
 
         //Event Handling
         public event GestureCompletedEventHandler gestureCompleted;
-        public delegate void GestureCompletedEventHandler(GestureType type, int skeletonID);
+        public delegate void GestureCompletedEventHandler(GestureType type);
 
         public GestureMapState(GestureMap map)
         {
@@ -33,7 +33,7 @@ namespace GestureFramework
         }
 
         //Called by the Controller implementing the Gesture Framework
-        public void RegisterGestureResult(Action<GestureType, int> gestureHandler)
+        public void RegisterGestureResult(Action<GestureType> gestureHandler)
         {
             gestureCompleted += new GestureCompletedEventHandler(gestureHandler);
         }
@@ -52,7 +52,7 @@ namespace GestureFramework
                 LastGestureCompletionTime = DateTime.Now;
                 
                 //Triggers a gesture completed event
-                this.gestureCompleted(state.Type, skeleton.TrackingId);
+                this.gestureCompleted(state.Type);
                 return true;
             }
             return false;
