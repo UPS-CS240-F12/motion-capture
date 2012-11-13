@@ -8,15 +8,15 @@ namespace GestureFramework
         private readonly Guid id;
         private readonly List<GestureComponent> components;
         private readonly String description;
-        private readonly GestureType type;
+        private readonly int gesture_id;
 
 
-        public Gesture(string name, int maxExecutionTime, GestureType type)
+        public Gesture(string name, int maxExecutionTime, int gesture_id)
         {
             id = Guid.NewGuid();
             this.description = name;
             components = new List<GestureComponent>();
-            this.type = type;
+            this.gesture_id = gesture_id;
             MaximumExecutionTime = maxExecutionTime;
         }
 
@@ -58,11 +58,11 @@ namespace GestureFramework
             }
         }
 
-        public GestureType Type
+        public int GestureID
         {
             get
             {
-                return type;
+                return gesture_id;
             }
         }
     }

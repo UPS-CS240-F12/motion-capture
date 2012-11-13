@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="ControllerState.cs" />
+    <Compile Include="ViCharGestures.cs" />
+    <Compile Include="ViCharPlayers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

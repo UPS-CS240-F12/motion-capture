@@ -23,7 +23,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[GestureType.Moving.ToString()].Magnitude;
+                return controllerStates[ViCharGestures.Moving.ToString()].Magnitude;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[GestureType.Turning.ToString()].Magnitude;
+                return controllerStates[ViCharGestures.Turning.ToString()].Magnitude;
             }
         }
 
@@ -39,7 +39,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[GestureType.Jumping.ToString()].isActive();
+                return controllerStates[ViCharGestures.Jumping.ToString()].isActive();
             }
         }
         #endregion
@@ -49,7 +49,7 @@ namespace Controller_Core
         private KinectSensorManager sensorManager;
 
         private Dictionary<int, GestureMapState> gestureMaps;
-        private List<Player> allPlayers = new List<Player>{new Player(0), new Player(1)};
+        private List<Player> allPlayers = new List<Player>{new PlayerOne(), new PlayerTwo()};
 
         private Dictionary<string, ControllerState> controllerStates;
         #endregion
@@ -61,9 +61,15 @@ namespace Controller_Core
             controllerStates = new Dictionary<string, ControllerState>();
 
             //Any Controller states must be registered (See registerControllerStates())
-            foreach (GestureType gesture in Enum.GetValues(typeof(GestureType)))
+            foreach (ViCharGestures gesture in Enum.GetValues(typeof(ViCharGestures)))
             {
                 controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture));
+            }
+
+            foreach (Player p in allPlayers)
+            {
+                p.mapState = new GestureMapState(p.GetGestureMap());
+                registerControllerStates(p.mapState);
             }
             ManageSensor();
         }
@@ -152,14 +158,12 @@ namespace Controller_Core
                     //Additionally, register its Controller States to the GestureMapState
                     if (!gestureMaps.ContainsKey(sd.TrackingId))
                     {
-                        int? newPlayer = findInactivePlayer();
-                        if (newPlayer.HasValue)
+                        Player noSkelPlayer = findInactivePlayer();
+                        if (noSkelPlayer != null)
                         {
-                            Console.WriteLine("New Skeleton Detected: " + sd.TrackingId + " - added as Player" + (newPlayer.Value + 1));
-                            allPlayers[newPlayer.Value].SkeletonID = sd.TrackingId;
-                            var mapstate = new GestureMapState(new GestureMap(allPlayers[newPlayer.Value]));
-                            registerControllerStates(mapstate);
-                            gestureMaps.Add(sd.TrackingId, mapstate);
+                            Console.WriteLine("New Skeleton Detected: " + sd.TrackingId + " - added as " + noSkelPlayer.ToString());
+                            noSkelPlayer.SkeletonID = sd.TrackingId;
+                            gestureMaps.Add(sd.TrackingId, noSkelPlayer.mapState);
                         }
                         
                     }
@@ -174,12 +178,12 @@ namespace Controller_Core
             }
         }
 
-        private int? findInactivePlayer()
+        private Player findInactivePlayer()
         {
             foreach (Player p in allPlayers)
             {
-                if (!p.SkeletonID.HasValue)
-                    return p.PlayerID;
+                if (p.SkeletonID.HasValue && !gestureMaps.ContainsKey(p.SkeletonID.Value))
+                    return p;
             }
             return null;
         }
@@ -189,7 +193,7 @@ namespace Controller_Core
         {
             foreach (ControllerState cState in controllerStates.Values)
             {
-                state.RegisterGestureResult(cState.Activate);
+                state.RegisterGestureResult(x => cState.Activate((ViCharGestures)x));
             }
         }
 

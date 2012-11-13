@@ -48,7 +48,6 @@
     <Compile Include="Gesture.cs" />
     <Compile Include="GestureComponent.cs" />
     <Compile Include="GestureComponentState.cs" />
-    <Compile Include="GestureEvent.cs" />
     <Compile Include="GestureMap.cs" />
     <Compile Include="GestureMapState.cs" />
     <Compile Include="GestureState.cs" />
