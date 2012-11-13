@@ -12,8 +12,6 @@ C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Con
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\GestureFramework.dll
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\Coding4Fun.Kinect.WinForm.dll
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\GestureFramework.pdb
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\Controller Core.dll
@@ -25,4 +23,7 @@ C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controlle
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\Microsoft.Kinect.Toolkit.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\GestureFramework.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.exe
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config

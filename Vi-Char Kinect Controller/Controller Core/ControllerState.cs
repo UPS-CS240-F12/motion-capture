@@ -13,41 +13,34 @@ namespace Controller_Core
 
         public TimeSpan ActivationDuration
         {
-            get;
-            set;
+            get { return this.activationDuration; }
+            set { this.activationDuration = value; }
         }
 
         //To be implemented...
-        public int Value
+        public int Magnitude
         {
-            get;
-            set;
-        }
-
-        public Player Player
-        {
-            get;
-            set;
+            get { return this.magnitude; }
+            set { this.magnitude = value; }
         }
 
         private DateTime lastActivation;
         private TimeSpan activationDuration;
-        private int value;
+        private int magnitude;
         private GestureType activatingGesture;
-        private Player activatingPlayer;
 
         public ControllerState(int activationDuration, GestureType activatingGesture)
         {
             this.lastActivation = DateTime.MinValue;
             this.activationDuration = TimeSpan.FromMilliseconds(activationDuration);
-            this.value = 0;
+            this.magnitude = 0;
             this.activatingGesture = activatingGesture;
         }
 
         //Activates the controller state
-        public void Activate(GestureType type, int activatingSkeletonID)
+        public void Activate(GestureType type)
         {
-            if (type == activatingGesture && activatingPlayer.GetId() == activatingSkeletonID)
+            if (type == activatingGesture)
             {
                 lastActivation = DateTime.Now;
                 Console.WriteLine("Activating Gesture: " + type.ToString() + "@" + lastActivation);

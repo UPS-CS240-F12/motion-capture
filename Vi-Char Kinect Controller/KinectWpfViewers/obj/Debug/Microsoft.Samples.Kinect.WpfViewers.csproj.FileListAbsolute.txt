@@ -46,7 +46,6 @@ C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Kin
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\KinectAudioViewer.g.cs
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\KinectDepthViewer.g.cs
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\KinectColorViewer.g.cs
