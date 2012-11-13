@@ -23,7 +23,7 @@ namespace Controller_Core
         {
             get
             {
-                return moving.Value;
+                return controllerStates[GestureType.Moving.ToString()].Magnitude;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Controller_Core
         {
             get
             {
-                return turning.Value;
+                return controllerStates[GestureType.Turning.ToString()].Magnitude;
             }
         }
 
@@ -39,7 +39,7 @@ namespace Controller_Core
         {
             get
             {
-                return jumping.isActive();
+                return controllerStates[GestureType.Jumping.ToString()].isActive();
             }
         }
         #endregion
@@ -48,36 +48,24 @@ namespace Controller_Core
         private KinectSensorChooser sensorChooser;
         private KinectSensorManager sensorManager;
 
-        private GestureMap gestureMap;
         private Dictionary<int, GestureMapState> gestureMaps;
+        private List<Player> allPlayers = new List<Player>{new Player(0), new Player(1)};
 
-        private ControllerState moving;
-        private ControllerState turning;
-        private ControllerState jumping;
+        private Dictionary<string, ControllerState> controllerStates;
         #endregion
 
         //Creates the ViChar Controller, setting all Controller State Activation Durations to the same value
         public ViCharController(int activationDuration=1000)
         {
-            gestureMap = new GestureMap();
             gestureMaps = new Dictionary<int, GestureMapState>();
-            ManageSensor();
-            //Any Controller states must be registered (See registerControllerStates())
-            moving = new ControllerState(activationDuration, GestureType.Moving);
-            turning = new ControllerState(activationDuration, GestureType.Turning);
-            jumping = new ControllerState(activationDuration, GestureType.Jumping);
-        }
+            controllerStates = new Dictionary<string, ControllerState>();
 
-        //Creates the ViChar Controller, setting all Controller State Activation Durations to a particular value
-        public ViCharController(int[] activationDurations)
-        {
-            gestureMap = new GestureMap();
-            gestureMaps = new Dictionary<int, GestureMapState>();
-            ManageSensor();
             //Any Controller states must be registered (See registerControllerStates())
-            moving = new ControllerState(activationDurations[0], GestureType.Moving);
-            turning = new ControllerState(activationDurations[1], GestureType.Turning);
-            jumping = new ControllerState(activationDurations[2], GestureType.Jumping);
+            foreach (GestureType gesture in Enum.GetValues(typeof(GestureType)))
+            {
+                controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture));
+            }
+            ManageSensor();
         }
 
         //Manages establishing a connection to the Kinect Sensor
@@ -155,6 +143,8 @@ namespace Controller_Core
                     // If this skeleton is no longer being tracked, skip it
                     if (sd.TrackingState != SkeletonTrackingState.Tracked)
                     {
+                        if(gestureMaps.ContainsKey(sd.TrackingId))
+                            gestureMaps.Remove(sd.TrackingId);
                         continue;
                     }
 
@@ -162,14 +152,20 @@ namespace Controller_Core
                     //Additionally, register its Controller States to the GestureMapState
                     if (!gestureMaps.ContainsKey(sd.TrackingId))
                     {
-                        Console.WriteLine("New Skeleton Detected: " + sd.TrackingId + " - out of " + allSkeletons.Length);
-                        var mapstate = new GestureMapState(gestureMap);
-                        registerControllerStates(mapstate);
-                        gestureMaps.Add(sd.TrackingId, mapstate);
+                        int? newPlayer = findInactivePlayer();
+                        if (newPlayer.HasValue)
+                        {
+                            Console.WriteLine("New Skeleton Detected: " + sd.TrackingId + " - added as Player" + (newPlayer.Value + 1));
+                            allPlayers[newPlayer.Value].SkeletonID = sd.TrackingId;
+                            var mapstate = new GestureMapState(new GestureMap(allPlayers[newPlayer.Value]));
+                            registerControllerStates(mapstate);
+                            gestureMaps.Add(sd.TrackingId, mapstate);
+                        }
+                        
                     }
 
                     //Check for a gesture. If one is found to be completed, an event will be fired and handled elsewhere.
-                    bool gestureComplete = gestureMaps[sd.TrackingId].Evaluate(sd, false, 640, 480);
+                    bool gestureComplete = gestureMaps[sd.TrackingId].Evaluate(sd, 640, 480);
                     if (gestureComplete)
                     {
                         gestureMaps[sd.TrackingId].ResetAll(sd);
@@ -178,12 +174,23 @@ namespace Controller_Core
             }
         }
 
+        private int? findInactivePlayer()
+        {
+            foreach (Player p in allPlayers)
+            {
+                if (!p.SkeletonID.HasValue)
+                    return p.PlayerID;
+            }
+            return null;
+        }
+
         //If you add a controller state, it must be added to this Registration list. If not, it will never activate. 
         private void registerControllerStates(GestureMapState state)
         {
-            state.RegisterGestureResult(moving.Activate);
-            state.RegisterGestureResult(turning.Activate);
-            state.RegisterGestureResult(jumping.Activate);
+            foreach (ControllerState cState in controllerStates.Values)
+            {
+                state.RegisterGestureResult(cState.Activate);
+            }
         }
 
     }

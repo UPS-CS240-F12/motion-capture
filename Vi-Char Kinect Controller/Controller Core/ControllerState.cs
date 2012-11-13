@@ -13,27 +13,27 @@ namespace Controller_Core
 
         public TimeSpan ActivationDuration
         {
-            get;
-            set;
+            get { return this.activationDuration; }
+            set { this.activationDuration = value; }
         }
 
         //To be implemented...
-        public int Value
+        public int Magnitude
         {
-            get;
-            set;
+            get { return this.magnitude; }
+            set { this.magnitude = value; }
         }
 
         private DateTime lastActivation;
         private TimeSpan activationDuration;
-        private int value;
+        private int magnitude;
         private GestureType activatingGesture;
 
         public ControllerState(int activationDuration, GestureType activatingGesture)
         {
             this.lastActivation = DateTime.MinValue;
             this.activationDuration = TimeSpan.FromMilliseconds(activationDuration);
-            this.value = 0;
+            this.magnitude = 0;
             this.activatingGesture = activatingGesture;
         }
 
