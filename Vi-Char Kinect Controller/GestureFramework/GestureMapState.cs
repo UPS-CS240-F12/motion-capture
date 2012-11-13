@@ -39,7 +39,7 @@ namespace GestureFramework
         }
 
         // This method goes through each gesture state for the user and updates it, looking for completed gestures
-        public bool Evaluate(Skeleton skeleton, Boolean passCommandToSystem, int xScale, int yScale)
+        public bool Evaluate(Skeleton skeleton, int xScale, int yScale)
         {
             foreach (var state in _gesturestate)
             {

@@ -11,13 +11,13 @@ namespace GestureFramework
         public GestureType Type;
 
 
-        public GestureMap()
+        public GestureMap(Player p)
         {
             Items = new List<Gesture>();
-            InitializeGestures();
+            InitializeGestures(p);
         }
 
-        private void InitializeGestures()
+        private void InitializeGestures(Player p)
         {
             //Gesture template = new Gesture("gesture_name", Tiemout_Value, GestureType.Type_Of_Gesture);
             //template.Components.Add(new GestureComponent(JointType.FirstJoint, JointType.SecondJoint, 
