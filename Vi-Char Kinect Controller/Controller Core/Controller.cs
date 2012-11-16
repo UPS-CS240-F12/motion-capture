@@ -19,19 +19,19 @@ namespace Controller_Core
             }
         }
 
-        public int Moving
+        public bool Moving
         {
             get
             {
-                return controllerStates[ViCharGestures.Moving.ToString()].Magnitude;
+                return controllerStates[ViCharGestures.Moving.ToString()].isActive();
             }
         }
 
-        public int Turning
+        public bool Turning
         {
             get
             {
-                return controllerStates[ViCharGestures.Turning.ToString()].Magnitude;
+                return controllerStates[ViCharGestures.Turning.ToString()].isActive();
             }
         }
 

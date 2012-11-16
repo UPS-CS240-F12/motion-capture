@@ -66,7 +66,10 @@ namespace Controller_Core
         public static List<int> ProcessGestureList(List<ViCharGestures> gestures)
         {
             List<int> gestureIDs = new List<int>();
-
+            foreach (ViCharGestures gesture in gestures)
+            {
+                gestureIDs.Add((int)gesture);
+            }
             return gestureIDs;
         }
     }
