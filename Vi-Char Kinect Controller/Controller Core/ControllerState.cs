@@ -27,9 +27,9 @@ namespace Controller_Core
         private DateTime lastActivation;
         private TimeSpan activationDuration;
         private int magnitude;
-        private ViCharGestures activatingGesture;
+        private ViCharGesture activatingGesture;
 
-        public ControllerState(int activationDuration, ViCharGestures activatingGesture)
+        public ControllerState(int activationDuration, ViCharGesture activatingGesture)
         {
             this.lastActivation = DateTime.MinValue;
             this.activationDuration = TimeSpan.FromMilliseconds(activationDuration);
@@ -38,7 +38,7 @@ namespace Controller_Core
         }
 
         //Activates the controller state
-        public void Activate(ViCharGestures type)
+        public void Activate(ViCharGesture type)
         {
             if (type == activatingGesture)
             {
