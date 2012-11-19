@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="ControllerState.cs" />
-    <Compile Include="ViCharGestures.cs" />
+    <Compile Include="ViCharAction.cs" />
     <Compile Include="ViCharPlayers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +58,10 @@
     <ProjectReference Include="..\Microsoft.Kinect.Toolkit\Microsoft.Kinect.Toolkit.csproj">
       <Project>{C6F9C31B-6130-4443-A5CC-EF0664552ECD}</Project>
       <Name>Microsoft.Kinect.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceFramework\VoiceFramework.csproj">
+      <Project>{C97EE4FE-4AAA-415E-9684-90E42B855F5F}</Project>
+      <Name>VoiceFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

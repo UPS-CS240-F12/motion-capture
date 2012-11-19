@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GestureFramework;
+using VoiceFramework;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Toolkit;
 using Microsoft.Samples.Kinect.WpfViewers;
@@ -23,7 +24,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[ViCharGestures.Moving.ToString()].isActive();
+                return controllerStates[ViCharGesture.Moving.ToString()].isActive();
             }
         }
 
@@ -31,7 +32,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[ViCharGestures.Turning.ToString()].isActive();
+                return controllerStates[ViCharGesture.Turning.ToString()].isActive();
             }
         }
 
@@ -39,7 +40,7 @@ namespace Controller_Core
         {
             get
             {
-                return controllerStates[ViCharGestures.Jumping.ToString()].isActive();
+                return controllerStates[ViCharGesture.Jumping.ToString()].isActive();
             }
         }
         #endregion
@@ -49,6 +50,7 @@ namespace Controller_Core
         private KinectSensorManager sensorManager;
 
         private Dictionary<int, GestureMapState> gestureMaps;
+        private SpeechRecognizer speechManager;
         private List<Player> allPlayers = new List<Player>{new PlayerOne(), new PlayerTwo()};
 
         private Dictionary<string, ControllerState> controllerStates;
@@ -58,10 +60,12 @@ namespace Controller_Core
         public ViCharController(int activationDuration=1000)
         {
             gestureMaps = new Dictionary<int, GestureMapState>();
+            speechManager = SpeechRecognizer.Create();
+
             controllerStates = new Dictionary<string, ControllerState>();
 
             //Any Controller states must be registered (See registerControllerStates())
-            foreach (ViCharGestures gesture in Enum.GetValues(typeof(ViCharGestures)))
+            foreach (ViCharGesture gesture in Enum.GetValues(typeof(ViCharGesture)))
             {
                 controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture));
             }
@@ -121,12 +125,25 @@ namespace Controller_Core
             };
             sensorManager.SkeletonStreamEnabled = true;
             sensorManager.KinectSensorEnabled = true;
+            
+            if (!sensorManager.KinectSensorAppConflict)
+            {
+                // Start speech recognizer after KinectSensor started successfully.
+                speechManager = SpeechRecognizer.Create();
+
+                if (speechManager != null)
+                {
+                    speechManager.SaidSomething += this.VoiceEvent;
+                    speechManager.Start(sensor.AudioSource);
+                }
+            }
         }
 
         //Disconnects the old Kinect from the Controller
         private void UninitializeKinectServices(KinectSensor sensor)
         {
             sensor.SkeletonFrameReady -= this.SkeletonsReady;
+
         }
 
         //Event Handler: Whenever a SkeletonFrame is ready from the Kinect, it is passed here to be inspected
@@ -178,6 +195,11 @@ namespace Controller_Core
             }
         }
 
+        private void VoiceEvent(object sender, SpeechRecognizer.SaidSomethingEventArgs e)
+        {
+            
+        }
+
         private Player findInactivePlayer()
         {
             foreach (Player p in allPlayers)
@@ -193,7 +215,7 @@ namespace Controller_Core
         {
             foreach (ControllerState cState in controllerStates.Values)
             {
-                state.RegisterGestureResult(x => cState.Activate((ViCharGestures)x));
+                state.RegisterGestureResult(x => cState.Activate((ViCharGesture)x));
             }
         }
 
