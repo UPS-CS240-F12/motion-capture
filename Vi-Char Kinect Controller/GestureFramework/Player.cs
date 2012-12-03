@@ -5,15 +5,8 @@
     using System.Windows;
     using Microsoft.Kinect;
 
-    public class Player
+    public abstract class Player
     {
-        public int PlayerID
-        {
-            get
-            {
-                return this.id;
-            }
-        }
 
         // Uses a nullable type for when a player is not in the screen
         public int? SkeletonID
@@ -22,29 +15,24 @@
             set;
         }
 
-        public readonly List<GestureType> playerGestures;
+        public List<int> playerGestures
+        {
+            get;
+            set;
+        }
 
-        private readonly int id;
+        public GestureMapState mapState
+        {
+            get;
+            set;
+        }
 
+        public abstract GestureMap GetGestureMap();
 
         // In a better world, I wouldn't have this hardcoded into the Gesture Framework. But, for our purposes it's good enough.
-        public Player(int id)
+        public Player()
         {
-            this.id = id;
             this.SkeletonID = null;
-            switch (id)
-            {
-                case 0:
-                    this.playerGestures = new List<GestureType> { GestureType.Moving, GestureType.Jumping };
-                    break;
-                case 1:
-                    this.playerGestures = new List<GestureType> { GestureType.Turning, GestureType.Jumping };
-                    break;
-                default:
-                    this.playerGestures = new List<GestureType> { GestureType.None };
-                    break;
-
-            }
         }
     }
 }

@@ -52,34 +52,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters.cs" />
     <Compile Include="KinectControl.cs" />
     <Compile Include="KinectSensorManagerEventArgs.cs" />
     <Compile Include="KinectSkeletonChooser.cs" />
-    <Compile Include="KinectViewer.cs" />
     <Compile Include="JointMapping.cs" />
-    <Compile Include="KinectAudioViewer.xaml.cs">
-      <DependentUpon>KinectAudioViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KinectDepthViewer.xaml.cs">
-      <DependentUpon>KinectDepthViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KinectColorViewer.xaml.cs">
-      <DependentUpon>KinectColorViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="KinectSensorManager.cs" />
-    <Compile Include="KinectSettings.xaml.cs">
-      <DependentUpon>KinectSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KinectSettingsViewModel.cs" />
     <Compile Include="KinectSkeleton.cs" />
-    <Compile Include="KinectSkeletonViewer.xaml.cs">
-      <DependentUpon>KinectSkeletonViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="KinectSpeechCommander.cs" />
-    <Compile Include="KinectVoiceCommandViewer.xaml.cs">
-      <DependentUpon>KinectVoiceCommandViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="LocalSupressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -103,40 +81,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="KinectAudioViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Resource Include="KinectControlResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Resource>
-    <Page Include="KinectDepthViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="KinectColorViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="KinectSettings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="KinectSkeletonViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="KinectVoiceCommandViewer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="SpeechGrammars\SpeechGrammar.xml" />
-    <Resource Include="Images\AudioKinectIcon.png" />
-    <Resource Include="Images\KinectTilt.png" />
-    <Resource Include="Images\Slider.png" />
-    <Resource Include="Images\SliderTrack.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

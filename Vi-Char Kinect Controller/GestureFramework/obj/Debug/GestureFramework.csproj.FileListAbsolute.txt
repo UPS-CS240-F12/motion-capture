@@ -18,3 +18,4 @@ C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controlle
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\GestureFramework\bin\Debug\GestureFramework.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\GestureFramework\obj\Debug\GestureFramework.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\GestureFramework\obj\Debug\GestureFramework.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\GestureFramework\obj\Debug\GestureFramework.csprojResolveAssemblyReference.cache
