@@ -22,83 +22,25 @@ namespace VoiceFramework
 
     public class SpeechRecognizer : IDisposable
     {
-        private readonly Dictionary<string, WhatSaid> gameplayPhrases = new Dictionary<string, WhatSaid>
-            {
-                { "Faster", new WhatSaid { Verb = Verbs.Faster } },
-                { "Slower", new WhatSaid { Verb = Verbs.Slower } },
-                { "Bigger Shapes", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Bigger", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Larger", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Huge", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Giant", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Biggest", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Super Big", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Smaller", new WhatSaid { Verb = Verbs.Smaller } },
-                { "Tiny", new WhatSaid { Verb = Verbs.Smallest } },
-                { "Super Small", new WhatSaid { Verb = Verbs.Smallest } },
-                { "Smallest", new WhatSaid { Verb = Verbs.Smallest } },
-                { "More Shapes", new WhatSaid { Verb = Verbs.More } },
-                { "More", new WhatSaid { Verb = Verbs.More } },
-                { "Less", new WhatSaid { Verb = Verbs.Fewer } },
-                { "Fewer", new WhatSaid { Verb = Verbs.Fewer } },
-            };
-
-        private readonly Dictionary<string, WhatSaid> colorPhrases = new Dictionary<string, WhatSaid>
-            {
-                { "Every Color", new WhatSaid { Verb = Verbs.RandomColors } },
-                { "All Colors", new WhatSaid { Verb = Verbs.RandomColors } },
-                { "Random Colors", new WhatSaid { Verb = Verbs.RandomColors } }
-            };
-
-        private readonly Dictionary<string, WhatSaid> singlePhrases = new Dictionary<string, WhatSaid>
-            {
-                { "Speed Up", new WhatSaid { Verb = Verbs.Faster } },
-                { "Slow Down", new WhatSaid { Verb = Verbs.Slower } },
-                { "Reset", new WhatSaid { Verb = Verbs.Reset } },
-                { "Clear", new WhatSaid { Verb = Verbs.Reset } },
-                { "Stop", new WhatSaid { Verb = Verbs.Pause } },
-                { "Pause Game", new WhatSaid { Verb = Verbs.Pause } },
-                { "Freeze", new WhatSaid { Verb = Verbs.Pause } },
-                { "Unfreeze", new WhatSaid { Verb = Verbs.Resume } },
-                { "Resume", new WhatSaid { Verb = Verbs.Resume } },
-                { "Continue", new WhatSaid { Verb = Verbs.Resume } },
-                { "Play", new WhatSaid { Verb = Verbs.Resume } },
-                { "Start", new WhatSaid { Verb = Verbs.Resume } },
-                { "Go", new WhatSaid { Verb = Verbs.Resume } },
-            };
-
         private SpeechRecognitionEngine sre;
         private KinectAudioSource kinectAudioSource;
         private bool paused;
         private bool isDisposed;
+        private List<string> voiceActions;
 
-        private SpeechRecognizer()
+        private SpeechRecognizer(Grammar g)
         {
             RecognizerInfo ri = GetKinectRecognizer();
             this.sre = new SpeechRecognitionEngine(ri);
-            this.LoadGrammar(this.sre);
+            this.LoadGrammar(this.sre, g);
         }
 
-        public event EventHandler<SaidSomethingEventArgs> SaidSomething;
+        public event VoiceActionCompletedEventHandler voiceActionCompleted;
+        public delegate void VoiceActionCompletedEventHandler(int vocalActionID);
 
-        public enum Verbs
+        public void RegisterVoiceActionResult(Action<int> voiceActionHandler)
         {
-            None = 0,
-            Bigger,
-            Biggest,
-            Smaller,
-            Smallest,
-            More,
-            Fewer,
-            Faster,
-            Slower,
-            Colorize,
-            RandomColors,
-            DoShapes,
-            ShapesAndColors,
-            Reset,
-            Pause,
-            Resume
+            voiceActionCompleted += new VoiceActionCompletedEventHandler(voiceActionHandler);
         }
 
         public EchoCancellationMode EchoCancellationMode
@@ -128,13 +70,13 @@ namespace VoiceFramework
 
         // This method exists so that it can be easily called and return safely if the speech prereqs aren't installed.
         // We isolate the try/catch inside this class, and don't impose the need on the caller.
-        public static SpeechRecognizer Create()
+        public static SpeechRecognizer Create(Grammar g)
         {
             SpeechRecognizer recognizer = null;
 
             try
             {
-                recognizer = new SpeechRecognizer();
+                recognizer = new SpeechRecognizer(g);
             }
             catch (Exception)
             {
@@ -175,7 +117,6 @@ namespace VoiceFramework
                 this.sre.RecognizeAsyncStop();
 
                 this.sre.SpeechRecognized -= this.SreSpeechRecognized;
-                this.sre.SpeechHypothesized -= this.SreSpeechHypothesized;
                 this.sre.SpeechRecognitionRejected -= this.SreSpeechRecognitionRejected;
             }
         }
@@ -234,167 +175,29 @@ namespace VoiceFramework
             }
         }
 
-        private void LoadGrammar(SpeechRecognitionEngine speechRecognitionEngine)
+        private void LoadGrammar(SpeechRecognitionEngine speechRecognitionEngine, Grammar g)
         {
-            // Build a simple grammar of shapes, colors, and some simple program control
-            var single = new Choices();
-            foreach (var phrase in this.singlePhrases)
-            {
-                single.Add(phrase.Key);
-            }
-
-            var gameplay = new Choices();
-            foreach (var phrase in this.gameplayPhrases)
-            {
-                gameplay.Add(phrase.Key);
-            }
-
-            var colors = new Choices();
-            foreach (var phrase in this.colorPhrases)
-            {
-                colors.Add(phrase.Key);
-            }
-
-            var coloredShapeGrammar = new GrammarBuilder();
-            coloredShapeGrammar.Append(colors);
-
-            var objectChoices = new Choices();
-            objectChoices.Add(gameplay);
-            objectChoices.Add(colors);
-            objectChoices.Add(coloredShapeGrammar);
-
-            var actionGrammar = new GrammarBuilder();
-            actionGrammar.AppendWildcard();
-            actionGrammar.Append(objectChoices);
-
-            var allChoices = new Choices();
-            allChoices.Add(actionGrammar);
-            allChoices.Add(single);
-
-            // This is needed to ensure that it will work on machines with any culture, not just en-us.
-            var gb = new GrammarBuilder { Culture = speechRecognitionEngine.RecognizerInfo.Culture };
-            gb.Append(allChoices);
-
-            var g = new Grammar(gb);
             speechRecognitionEngine.LoadGrammar(g);
             speechRecognitionEngine.SpeechRecognized += this.SreSpeechRecognized;
-            speechRecognitionEngine.SpeechHypothesized += this.SreSpeechHypothesized;
             speechRecognitionEngine.SpeechRecognitionRejected += this.SreSpeechRecognitionRejected;
         }
 
         private void SreSpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
-            var said = new SaidSomethingEventArgs { Verb = Verbs.None, Matched = "?" };
 
-            if (this.SaidSomething != null)
-            {
-                this.SaidSomething(new object(), said);
-            }
-
-            Console.WriteLine("\nSpeech Rejected");
-        }
-
-        private void SreSpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
-        {
-            Console.Write("\rSpeech Hypothesized: \t{0}", e.Result.Text);
         }
 
         private void SreSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            Console.Write("\rSpeech Recognized: \t{0}", e.Result.Text);
-
-            if ((this.SaidSomething == null) || (e.Result.Confidence < 0.3))
+            if ((voiceActionCompleted == null) || (e.Result.Confidence < 0.3))
             {
                 return;
             }
 
-            var said = new SaidSomethingEventArgs { Verb = 0, Phrase = e.Result.Text };
 
-            // First check for color, in case both color _and_ shape were both spoken
-            bool foundColor = false;
-            foreach (var phrase in this.colorPhrases)
-            {
-                if (e.Result.Text.Contains(phrase.Key) && (phrase.Value.Verb == Verbs.Colorize))
-                {
-                    said.Matched = phrase.Key;
-                    foundColor = true;
-                    break;
-                }
-            }
 
-            // Look for a match in the order of the lists below, first match wins.
-            List<Dictionary<string, WhatSaid>> allDicts = new List<Dictionary<string, WhatSaid>> { this.gameplayPhrases, this.colorPhrases, this.singlePhrases };
+            voiceActionCompleted(0);
 
-            bool found = false;
-            for (int i = 0; i < allDicts.Count && !found; ++i)
-            {
-                foreach (var phrase in allDicts[i])
-                {
-                    if (e.Result.Text.Contains(phrase.Key))
-                    {
-                        said.Verb = phrase.Value.Verb;
-                        if ((said.Verb == Verbs.DoShapes) && foundColor)
-                        {
-                            said.Verb = Verbs.ShapesAndColors;
-                            said.Matched += " " + phrase.Key;
-                        }
-                        else
-                        {
-                            said.Matched = phrase.Key;
-                        }
-
-                        found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                return;
-            }
-
-            if (this.paused)
-            {
-                // Only accept restart or reset
-                if ((said.Verb != Verbs.Resume) && (said.Verb != Verbs.Reset))
-                {
-                    return;
-                }
-
-                this.paused = false;
-            }
-            else
-            {
-                if (said.Verb == Verbs.Resume)
-                {
-                    return;
-                }
-            }
-
-            if (said.Verb == Verbs.Pause)
-            {
-                this.paused = true;
-            }
-
-            if (this.SaidSomething != null)
-            {
-                this.SaidSomething(new object(), said);
-            }
-        }
-
-        private struct WhatSaid
-        {
-            public Verbs Verb;
-        }
-
-        public class SaidSomethingEventArgs : EventArgs
-        {
-            public Verbs Verb { get; set; }
-
-            public string Phrase { get; set; }
-
-            public string Matched { get; set; }
         }
     }
 }

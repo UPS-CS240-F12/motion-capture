@@ -58,7 +58,6 @@
     <Compile Include="JointMapping.cs" />
     <Compile Include="KinectSensorManager.cs" />
     <Compile Include="KinectSkeleton.cs" />
-    <Compile Include="KinectSpeechCommander.cs" />
     <Compile Include="LocalSupressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -82,11 +81,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="SpeechGrammars\SpeechGrammar.xml">
-      <SubType>Designer</SubType>
-    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

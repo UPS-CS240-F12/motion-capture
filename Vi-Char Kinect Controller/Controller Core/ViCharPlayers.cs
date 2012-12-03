@@ -38,7 +38,7 @@ namespace Controller_Core
     {
         public PlayerTwo()
         {
-            this.playerGestures = PlayerHelpers.ProcessGestureList(new List<ViCharGesture> { ViCharGesture.Turning, ViCharGesture.Jumping });
+            this.playerGestures = PlayerHelpers.ProcessGestureList(new List<ViCharGesture> { ViCharGesture.TurningLeft, ViCharGesture.TurningRight, ViCharGesture.Jumping });
         }
 
         public override GestureMap GetGestureMap()
@@ -52,10 +52,15 @@ namespace Controller_Core
                 JointRelationship.Below, JointRelationship.Above));
             map.Items.Add(jumping);
 
-            Gesture turning = new Gesture("turning", 1000, (int)ViCharGesture.Turning);
-            turning.Components.Add(new GestureComponent(JointType.HandLeft, JointType.ShoulderLeft,
-                JointRelationship.BelowAndLeft, JointRelationship.BelowAndRight));
-            map.Items.Add(turning);
+            Gesture turningLeft = new Gesture("turningLeft", 1000, (int)ViCharGesture.TurningLeft);
+            turningLeft.Components.Add(new GestureComponent(JointType.KneeRight, JointType.KneeLeft,
+                JointRelationship.AboveAndLeft));
+            map.Items.Add(turningLeft);
+
+            Gesture turningRight = new Gesture("turningRight", 1000, (int)ViCharGesture.TurningRight);
+            turningRight.Components.Add(new GestureComponent(JointType.KneeLeft, JointType.KneeRight,
+                JointRelationship.AboveAndRight));
+            map.Items.Add(turningRight);
 
             return map;
         }
