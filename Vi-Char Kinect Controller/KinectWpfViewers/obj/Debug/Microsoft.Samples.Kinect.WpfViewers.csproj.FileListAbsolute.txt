@@ -46,9 +46,8 @@ C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\Kin
 C:\Users\max\Documents\Visual Studio 2010\Projects\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.csprojResolveAssemblyReference.cache
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.g.resources
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.Properties.Resources.resources
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.csproj.GenerateResource.Cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Debug\Microsoft.Samples.Kinect.WpfViewers.csprojResolveAssemblyReference.cache

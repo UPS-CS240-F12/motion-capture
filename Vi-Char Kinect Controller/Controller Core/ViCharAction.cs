@@ -9,7 +9,8 @@ namespace Controller_Core
     {
         None,
         Moving, 
-        Turning, 
+        TurningLeft,
+        TurningRight, 
         Jumping
     }
 

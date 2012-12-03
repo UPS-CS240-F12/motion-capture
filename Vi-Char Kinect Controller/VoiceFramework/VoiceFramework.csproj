@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeechRecognizer.cs" />
+    <Compile Include="VoiceAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KinectWpfViewers\Microsoft.Samples.Kinect.WpfViewers.csproj">
