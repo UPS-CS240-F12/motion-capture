@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-61825566308
+11720674213
 
-21-1691453765
+161299751412
 14-1657391578
-KinectAudioViewer.xaml;KinectDepthViewer.xaml;KinectColorViewer.xaml;KinectSettings.xaml;KinectSkeletonViewer.xaml;KinectVoiceCommandViewer.xaml;
+KinectVoiceCommandViewer.xaml;
 
 False
 

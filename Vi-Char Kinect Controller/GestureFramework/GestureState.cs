@@ -20,11 +20,11 @@ namespace GestureFramework
         }
 
 
-        public GestureType Type
+        public int GestureID
         {
             get
             {
-                return _gesture.Type;
+                return _gesture.GestureID;
             }
         }
 
