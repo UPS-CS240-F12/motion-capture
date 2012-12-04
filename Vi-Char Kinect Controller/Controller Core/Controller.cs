@@ -6,11 +6,13 @@ using Microsoft.Kinect;
 using Microsoft.Kinect.Toolkit;
 using Microsoft.Samples.Kinect.WpfViewers;
 using Microsoft.Speech.Recognition;
+using System.IO;
+using System.IO.Pipes;
 
 namespace Controller_Core
 {
 
-    public class ViCharController
+    public class ViCharController : IDisposable
     {
         #region Properties
         public bool SensorActive
@@ -29,11 +31,19 @@ namespace Controller_Core
             }
         }
 
-        public bool Turning
+        public bool TurningLeft
         {
             get
             {
-                return controllerStates[ViCharGesture.Turning.ToString()].isActive();
+                return controllerStates[ViCharGesture.TurningLeft.ToString()].isActive();
+            }
+        }
+
+        public bool TurningRight
+        {
+            get
+            {
+                return controllerStates[ViCharGesture.TurningRight.ToString()].isActive();
             }
         }
 
@@ -49,6 +59,9 @@ namespace Controller_Core
         #region Fields
         private KinectSensorChooser sensorChooser;
         private KinectSensorManager sensorManager;
+
+        private NamedPipeServerStream serverPipe;
+        private StreamWriter serverPipeWriter;
 
         private Dictionary<int, GestureMapState> gestureMaps;
         private SpeechRecognizer speechManager;
@@ -66,20 +79,36 @@ namespace Controller_Core
             //Any Controller states must be registered (See registerControllerStates())
             foreach (ViCharGesture gesture in Enum.GetValues(typeof(ViCharGesture)))
             {
-                controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture, ViCharVoiceAction.None));
+                controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture, ViCharVoiceAction.VoiceNone));
             }
 
-            //foreach (ViCharVoiceAction voiceAction in Enum.GetValues(typeof(ViCharVoiceAction)))
-            //{
-            //    controllerStates.Add(voiceAction.ToString(), new ControllerState(activationDuration, ViCharGesture.None, voiceAction));
-            //}
+            foreach (ViCharVoiceAction voiceAction in Enum.GetValues(typeof(ViCharVoiceAction)))
+            {
+                controllerStates.Add(voiceAction.ToString(), new ControllerState(activationDuration, ViCharGesture.None, voiceAction));
+            }
 
             foreach (Player p in allPlayers)
             {
                 p.mapState = new GestureMapState(p.GetGestureMap());
                 registerGestureControllerStates(p.mapState);
             }
+            
             ManageSensor();
+            CreateServerPipe();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);      
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (serverPipeWriter != null)
+                serverPipeWriter.Dispose();
+            if (serverPipe != null)
+                serverPipe.Dispose();
         }
 
         //Manages establishing a connection to the Kinect Sensor
@@ -96,6 +125,17 @@ namespace Controller_Core
             sensorManager.KinectSensorChanged += this.KinectSensorChanged;
 
             sensorManager.KinectSensor = sensorChooser.Kinect;
+            Console.WriteLine("*** Kinect Ready! ***");
+        }
+
+        private void CreateServerPipe()
+        {
+            if (serverPipe != null)
+                serverPipe.Close();
+            serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
+            serverPipe.WaitForConnection();
+            serverPipeWriter = new StreamWriter(serverPipe);
+            serverPipeWriter.AutoFlush = true;
         }
 
         //Event Handler: If the Kinect is disconnected/reconnected, handles that process.
@@ -132,14 +172,13 @@ namespace Controller_Core
 
             if (!sensorManager.KinectSensorAppConflict)
             {
-                // Start speech recognizer after KinectSensor started successfully.
-                //speechManager = SpeechRecognizer.Create();
+                speechManager = SpeechRecognizer.Create();
 
-                //if (speechManager != null)
-                //{
-                //    registerVoiceControllerStates(speechManager);
-                //    speechManager.Start(sensor.AudioSource);
-                //}
+                if (speechManager != null)
+                {
+                    registerVoiceControllerStates(speechManager);
+                    speechManager.Start(sensor.AudioSource);
+                }
             }
         }
 
@@ -179,10 +218,9 @@ namespace Controller_Core
                     if (!gestureMaps.ContainsKey(sd.TrackingId))
                     {
                         Player noSkelPlayer = findInactivePlayer();
-                        Console.WriteLine("Adding new skeleton as Player");
                         if (noSkelPlayer != null)
                         {
-                            Console.WriteLine("New Skeleton Detected: " + sd.TrackingId + " - added as " + noSkelPlayer.ToString());
+                            Console.WriteLine("New Skeleton added as " + noSkelPlayer.ToString());
                             noSkelPlayer.SkeletonID = sd.TrackingId;
                             gestureMaps.Add(sd.TrackingId, noSkelPlayer.mapState);
                         }
@@ -199,16 +237,6 @@ namespace Controller_Core
             }
         }
 
-        private bool isActivePlayer(int id)
-        {
-            return allPlayers.Exists((x => x.SkeletonID == id));
-        }
-
-
-
-        //if (gestureMaps.ContainsKey(sd.TrackingId))
-        //    gestureMaps.Remove(sd.TrackingId);
-
         private void removeInactivePlayers(Skeleton[] detectedSkeletons)
         {
             List<int> detectedIDs = new List<int>();
@@ -218,7 +246,7 @@ namespace Controller_Core
             {
                 if (p.SkeletonID.HasValue && !detectedIDs.Contains(p.SkeletonID.Value))
                 {
-                    Console.WriteLine("Removing Inactive Player: " + p.ToString() + p.SkeletonID.Value);
+                    Console.WriteLine(p.ToString() + " detected as inactive - Removing skeleton");
                     if (gestureMaps.ContainsKey(p.SkeletonID.Value))
                         gestureMaps.Remove(p.SkeletonID.Value);
                     p.SkeletonID = null;
@@ -244,33 +272,31 @@ namespace Controller_Core
             return null;
         }
 
-        //If you add a controller state, it must be added to this Registration list. If not, it will never activate. 
         private void registerGestureControllerStates(GestureMapState state)
         {
-            foreach (ControllerState cState in controllerStates.Values)
-            {
-                // Necessary because of how lambda statements are interpreted
-                // http://stackoverflow.com/questions/4945486/multiple-anonymous-event-handlers-but-only-last-one-is-called
-                ControllerState copy = cState;
-                if (copy.IsGestureActivated())
-                {
-                    state.RegisterGestureResult(x => copy.ActivateGesture((ViCharGesture)x));
-                }
-            }
+            state.RegisterGestureResult(x => SendEventThroughPipe( ((ViCharGesture)x).ToString()) );
         }
 
         private void registerVoiceControllerStates(SpeechRecognizer speechEngine)
         {
-            foreach (ControllerState cState in controllerStates.Values)
-            {
-                if (cState.IsVoiceActivated())
-                {
-                    speechEngine.RegisterVoiceActionResult(x => cState.ActivateVoice((ViCharVoiceAction)x));
-                }
-            }
+            speechEngine.RegisterVoiceActionResult(x => SendEventThroughPipe( ((ViCharVoiceAction)x).ToString()) );
         }
 
-
+        private void SendEventThroughPipe(string type)
+        {
+            if (serverPipe.IsConnected && serverPipeWriter != null)
+            {
+                try
+                {
+                    serverPipeWriter.WriteLine(type);
+                }
+                catch (IOException e) { CreateServerPipe(); }
+            }
+            else
+            {
+                CreateServerPipe();
+            }
+        }
 
     }
 }

@@ -24,9 +24,8 @@ namespace VoiceFramework
     {
         private SpeechRecognitionEngine sre;
         private KinectAudioSource kinectAudioSource;
-        private bool paused;
         private bool isDisposed;
-        private List<string> voiceActions;
+        private static string[] actions = new string[]{ "pew", "shield" };
 
         private SpeechRecognizer(Grammar g)
         {
@@ -70,10 +69,13 @@ namespace VoiceFramework
 
         // This method exists so that it can be easily called and return safely if the speech prereqs aren't installed.
         // We isolate the try/catch inside this class, and don't impose the need on the caller.
-        public static SpeechRecognizer Create(Grammar g)
+        public static SpeechRecognizer Create()
         {
             SpeechRecognizer recognizer = null;
 
+            Choices vocabulary = new Choices(actions);
+            GrammarBuilder gb = new GrammarBuilder(vocabulary);
+            Grammar g = new Grammar(gb);
             try
             {
                 recognizer = new SpeechRecognizer(g);
@@ -184,7 +186,6 @@ namespace VoiceFramework
 
         private void SreSpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
-
         }
 
         private void SreSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
@@ -194,9 +195,18 @@ namespace VoiceFramework
                 return;
             }
 
-
-
-            voiceActionCompleted(0);
+            switch (e.Result.Text)
+            {
+                case "pew":
+                    Console.WriteLine("Attack Activated"); 
+                    voiceActionCompleted(1);
+                    break;
+                case "shield": 
+                    Console.WriteLine("Shield Activated");
+                    voiceActionCompleted(2);
+                    break;
+                default: break;
+            }
 
         }
     }
