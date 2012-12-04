@@ -1,4 +1,3 @@
-C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Release\Controller Core.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\Controller Core.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\Controller Core.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\GestureFramework.dll
@@ -10,5 +9,6 @@ C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controlle
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\Microsoft.Kinect.Toolkit.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\bin\Release\VoiceFramework.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Release\Controller Core.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Release\Controller Core.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Controller Core\obj\Release\Controller Core.pdb

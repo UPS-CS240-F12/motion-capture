@@ -9,7 +9,7 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            Controller_Core.ViCharController c = new Controller_Core.ViCharController(500);
+            Controller_Core.ViCharController c = new Controller_Core.ViCharController();
             while (true)
             {
                 continue;

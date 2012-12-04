@@ -25,10 +25,16 @@ namespace VoiceFramework
         private SpeechRecognitionEngine sre;
         private KinectAudioSource kinectAudioSource;
         private bool isDisposed;
-        private static string[] actions = new string[]{ "pew", "shield" };
+        private List<string> actions;
+        //private static string[] actions = new string[]{ "pew", "shield" };
 
-        private SpeechRecognizer(Grammar g)
+        private SpeechRecognizer(List<string> words)
         {
+            this.actions = words;
+            Choices vocabulary = new Choices(actions.ToArray());
+            GrammarBuilder gb = new GrammarBuilder(vocabulary);
+            Grammar g = new Grammar(gb);
+
             RecognizerInfo ri = GetKinectRecognizer();
             this.sre = new SpeechRecognitionEngine(ri);
             this.LoadGrammar(this.sre, g);
@@ -69,16 +75,13 @@ namespace VoiceFramework
 
         // This method exists so that it can be easily called and return safely if the speech prereqs aren't installed.
         // We isolate the try/catch inside this class, and don't impose the need on the caller.
-        public static SpeechRecognizer Create()
+        public static SpeechRecognizer Create(List<string> words)
         {
             SpeechRecognizer recognizer = null;
 
-            Choices vocabulary = new Choices(actions);
-            GrammarBuilder gb = new GrammarBuilder(vocabulary);
-            Grammar g = new Grammar(gb);
             try
             {
-                recognizer = new SpeechRecognizer(g);
+                recognizer = new SpeechRecognizer(words);
             }
             catch (Exception)
             {
@@ -129,8 +132,6 @@ namespace VoiceFramework
             GC.SuppressFinalize(this);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "sre",
-            Justification = "This is suppressed because FXCop does not see our threaded dispose.")]
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
@@ -195,19 +196,10 @@ namespace VoiceFramework
                 return;
             }
 
-            switch (e.Result.Text)
+            if (actions.Contains(e.Result.Text))
             {
-                case "pew":
-                    Console.WriteLine("Attack Activated"); 
-                    voiceActionCompleted(1);
-                    break;
-                case "shield": 
-                    Console.WriteLine("Shield Activated");
-                    voiceActionCompleted(2);
-                    break;
-                default: break;
+                voiceActionCompleted(actions.IndexOf(e.Result.Text));
             }
-
         }
     }
 }

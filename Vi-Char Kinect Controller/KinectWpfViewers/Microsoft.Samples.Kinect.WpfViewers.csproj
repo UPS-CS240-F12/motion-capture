@@ -59,7 +59,6 @@
     <Compile Include="JointMapping.cs" />
     <Compile Include="KinectSensorManager.cs" />
     <Compile Include="KinectSkeleton.cs" />
-    <Compile Include="LocalSupressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

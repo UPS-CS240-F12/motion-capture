@@ -1,0 +1,7 @@
+Client:
+Use the Client dll in your application - some tuning may be required, since we weren't sure 
+exactly how long each gesture should last. The namespace is Controller_Core
+
+Server:
+Just launch ViCharController.exe. It should connect to the first application to create the 
+corresponding client object
