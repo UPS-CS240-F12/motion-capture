@@ -1,5 +1,6 @@
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Release\Microsoft.Samples.Kinect.WpfViewers.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\bin\Release\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Release\Microsoft.Samples.Kinect.WpfViewers.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Release\Microsoft.Samples.Kinect.WpfViewers.Properties.Resources.resources
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Release\Microsoft.Samples.Kinect.WpfViewers.csproj.GenerateResource.Cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\KinectWpfViewers\obj\Release\Microsoft.Samples.Kinect.WpfViewers.dll

@@ -16,7 +16,7 @@ namespace Controller_Core
 
         public override GestureMap GetGestureMap()
         {
-            GestureMap map = new GestureMap(this);
+            GestureMap map = new GestureMap();
 
             Gesture moving = new Gesture("moving", 1000, (int)ViCharGesture.Moving);
             moving.Components.Add(new GestureComponent(JointType.HandRight, JointType.ElbowRight,
@@ -48,7 +48,7 @@ namespace Controller_Core
 
         public override GestureMap GetGestureMap()
         {
-            GestureMap map = new GestureMap(this);
+            GestureMap map = new GestureMap();
 
             Gesture jumping = new Gesture("jumping", 1000, (int)ViCharGesture.Jumping);
             jumping.Components.Add(new GestureComponent(JointType.HandRight, JointType.ShoulderRight,
