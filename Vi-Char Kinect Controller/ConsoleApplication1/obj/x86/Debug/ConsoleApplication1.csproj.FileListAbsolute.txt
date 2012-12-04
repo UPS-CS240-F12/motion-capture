@@ -29,3 +29,4 @@ C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controlle
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.exe
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\obj\x86\Debug\ConsoleApplication1.pdb
+C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\ConsoleApplication1\bin\Debug\ViCharController.exe.config

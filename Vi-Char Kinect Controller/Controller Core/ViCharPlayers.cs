@@ -32,6 +32,11 @@ namespace Controller_Core
 
             return map;
         }
+
+        public override string ToString()
+        {
+            return "Player One";
+        }
     }
 
     public class PlayerTwo : Player
@@ -63,6 +68,11 @@ namespace Controller_Core
             map.Items.Add(turningRight);
 
             return map;
+        }
+
+        public override string ToString()
+        {
+            return "Player Two";
         }
     }
 
