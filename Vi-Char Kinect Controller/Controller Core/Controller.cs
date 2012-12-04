@@ -1,91 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 using GestureFramework;
-using VoiceFramework;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Toolkit;
 using Microsoft.Samples.Kinect.WpfViewers;
-using Microsoft.Speech.Recognition;
-using System.IO;
-using System.IO.Pipes;
+using VoiceFramework;
 
 namespace Controller_Core
 {
-
     public class ViCharController : IDisposable
     {
-        #region Properties
-        public bool SensorActive
-        {
-            get
-            {
-                return (sensorChooser.Kinect != null);
-            }
-        }
-
-        public bool Moving
-        {
-            get
-            {
-                return controllerStates[ViCharGesture.Moving.ToString()].isActive();
-            }
-        }
-
-        public bool TurningLeft
-        {
-            get
-            {
-                return controllerStates[ViCharGesture.TurningLeft.ToString()].isActive();
-            }
-        }
-
-        public bool TurningRight
-        {
-            get
-            {
-                return controllerStates[ViCharGesture.TurningRight.ToString()].isActive();
-            }
-        }
-
-        public bool Jumping
-        {
-            get
-            {
-                return controllerStates[ViCharGesture.Jumping.ToString()].isActive();
-            }
-        }
-        #endregion
-
         #region Fields
         private KinectSensorChooser sensorChooser;
         private KinectSensorManager sensorManager;
+        private SpeechRecognizer speechManager;
 
         private NamedPipeServerStream serverPipe;
         private StreamWriter serverPipeWriter;
 
-        private Dictionary<int, GestureMapState> gestureMaps;
-        private SpeechRecognizer speechManager;
         private List<Player> allPlayers = new List<Player> { new PlayerOne(), new PlayerTwo() };
-
-        private Dictionary<string, ControllerState> controllerStates;
+        private Dictionary<int, GestureMapState> gestureMaps;
         #endregion
 
+        #region Initialization
         //Creates the ViChar Controller, setting all Controller State Activation Durations to the same value
-        public ViCharController(int activationDuration = 1000)
+        public ViCharController()
         {
             gestureMaps = new Dictionary<int, GestureMapState>();
-            controllerStates = new Dictionary<string, ControllerState>();
-
-            //Any Controller states must be registered (See registerControllerStates())
-            foreach (ViCharGesture gesture in Enum.GetValues(typeof(ViCharGesture)))
-            {
-                controllerStates.Add(gesture.ToString(), new ControllerState(activationDuration, gesture, ViCharVoiceAction.VoiceNone));
-            }
-
-            foreach (ViCharVoiceAction voiceAction in Enum.GetValues(typeof(ViCharVoiceAction)))
-            {
-                controllerStates.Add(voiceAction.ToString(), new ControllerState(activationDuration, ViCharGesture.None, voiceAction));
-            }
 
             foreach (Player p in allPlayers)
             {
@@ -128,16 +71,19 @@ namespace Controller_Core
             Console.WriteLine("*** Kinect Ready! ***");
         }
 
-        private void CreateServerPipe()
+
+        private void registerGestureControllerStates(GestureMapState state)
         {
-            if (serverPipe != null)
-                serverPipe.Close();
-            serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
-            serverPipe.WaitForConnection();
-            serverPipeWriter = new StreamWriter(serverPipe);
-            serverPipeWriter.AutoFlush = true;
+            state.RegisterGestureResult(x => SendEventThroughPipe(((ViCharGesture)x).ToString()));
         }
 
+        private void registerVoiceControllerStates(SpeechRecognizer speechEngine)
+        {
+            speechEngine.RegisterVoiceActionResult(x => SendEventThroughPipe(((ViCharVoiceAction)x).ToString()));
+        }
+        #endregion
+
+        #region Kinect Event Management
         //Event Handler: If the Kinect is disconnected/reconnected, handles that process.
         private void KinectSensorChanged(object sender, KinectSensorManagerEventArgs<KinectSensor> args)
         {
@@ -152,7 +98,8 @@ namespace Controller_Core
             }
         }
 
-        //Enables all the appropriate streams, and sets the smoothing for skeleton data
+        //Enables all the appropriate Kinect streams, and sets the smoothing for skeleton data
+        // Also sets up the speech recognition engine
         private void InitializeKinectServices(KinectSensor sensor)
         {
             sensorManager.ColorFormat = ColorImageFormat.RgbResolution640x480Fps30;
@@ -172,7 +119,7 @@ namespace Controller_Core
 
             if (!sensorManager.KinectSensorAppConflict)
             {
-                speechManager = SpeechRecognizer.Create();
+                speechManager = SpeechRecognizer.Create(ViCharVoiceActionGrammar.Words);
 
                 if (speechManager != null)
                 {
@@ -186,7 +133,8 @@ namespace Controller_Core
         private void UninitializeKinectServices(KinectSensor sensor)
         {
             sensor.SkeletonFrameReady -= this.SkeletonsReady;
-
+            if (speechManager != null)
+                speechManager.Dispose();
         }
 
         //Event Handler: Whenever a SkeletonFrame is ready from the Kinect, it is passed here to be inspected
@@ -236,12 +184,20 @@ namespace Controller_Core
                 }
             }
         }
+        #endregion
 
+        #region Player To Skeleton Mapping Helper Functions
+        // Determines if the skeleton attached to either main player has left the play space
         private void removeInactivePlayers(Skeleton[] detectedSkeletons)
         {
+            // Creates a list of all the skeleton IDs presently active
+            //  -Made into a list for simpler manipulation/queries
             List<int> detectedIDs = new List<int>();
             foreach (Skeleton s in detectedSkeletons)
                 detectedIDs.Add(s.TrackingId);
+            
+            // Checks to see if the skeleton ID attached to either player is still active. 
+            // If not, that Player is set to inactive, and their Gesture Map is discarded
             foreach (Player p in allPlayers)
             {
                 if (p.SkeletonID.HasValue && !detectedIDs.Contains(p.SkeletonID.Value))
@@ -254,6 +210,7 @@ namespace Controller_Core
             }
         }
 
+        // Determines which (if any) player slot is available to be filled
         private Player findInactivePlayer()
         {
             foreach (Player p in allPlayers)
@@ -271,17 +228,21 @@ namespace Controller_Core
             }
             return null;
         }
+        #endregion
 
-        private void registerGestureControllerStates(GestureMapState state)
+        #region Named Pipes
+        // Connects to the controller frontend
+        private void CreateServerPipe()
         {
-            state.RegisterGestureResult(x => SendEventThroughPipe( ((ViCharGesture)x).ToString()) );
+            if (serverPipe != null)
+                serverPipe.Close();
+            serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
+            serverPipe.WaitForConnection();
+            serverPipeWriter = new StreamWriter(serverPipe);
+            serverPipeWriter.AutoFlush = true;
         }
 
-        private void registerVoiceControllerStates(SpeechRecognizer speechEngine)
-        {
-            speechEngine.RegisterVoiceActionResult(x => SendEventThroughPipe( ((ViCharVoiceAction)x).ToString()) );
-        }
-
+        // This method is wired up to the event framework to send controller events to the frontend
         private void SendEventThroughPipe(string type)
         {
             if (serverPipe.IsConnected && serverPipeWriter != null)
@@ -290,13 +251,14 @@ namespace Controller_Core
                 {
                     serverPipeWriter.WriteLine(type);
                 }
-                catch (IOException e) { CreateServerPipe(); }
+                catch (IOException e) { Console.WriteLine(e.Message); CreateServerPipe(); }
             }
             else
             {
                 CreateServerPipe();
             }
         }
+        #endregion
 
     }
 }
