@@ -68,7 +68,8 @@ namespace Controller_Core
             sensorManager.KinectSensorChanged += this.KinectSensorChanged;
 
             sensorManager.KinectSensor = sensorChooser.Kinect;
-            Console.WriteLine("*** Kinect Ready! ***");
+            if(sensorManager.KinectSensor != null)
+                Console.WriteLine("*** Kinect Ready! ***");
         }
 
 
