@@ -1,0 +1,4 @@
+C:\Users\max\Documents\Visual Studio 2010\Projects\DummyViCharController\DummyViCharController\bin\Release\DummyViCharController.dll
+C:\Users\max\Documents\Visual Studio 2010\Projects\DummyViCharController\DummyViCharController\bin\Release\DummyViCharController.pdb
+C:\Users\max\Documents\Visual Studio 2010\Projects\DummyViCharController\DummyViCharController\obj\Release\DummyViCharController.dll
+C:\Users\max\Documents\Visual Studio 2010\Projects\DummyViCharController\DummyViCharController\obj\Release\DummyViCharController.pdb

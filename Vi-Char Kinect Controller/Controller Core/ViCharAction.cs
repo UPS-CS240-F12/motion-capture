@@ -16,9 +16,8 @@ namespace Controller_Core
 
     public enum ViCharVoiceAction
     {
-        None,
-        VoiceAction1,
-        VoiceAction2,
-        VoiceAction3
+        VoiceNone,
+        VoiceAttack,
+        VoiceShield
     }
 }

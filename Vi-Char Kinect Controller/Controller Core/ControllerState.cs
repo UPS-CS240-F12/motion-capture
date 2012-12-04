@@ -42,7 +42,7 @@ namespace Controller_Core
 
         public bool IsGestureActivated()
         {
-            return (activatingGesture != null);
+            return (activatingGesture != ViCharGesture.None);
         }
 
         //Activates the controller state via a Voice Action
@@ -56,7 +56,7 @@ namespace Controller_Core
 
         public bool IsVoiceActivated()
         {
-            return (activatingVoiceAction != null);
+            return (activatingVoiceAction != ViCharVoiceAction.VoiceNone);
         }
 
         //Checks if the state is still active. If the time elapsed since last activation exceeds the activationDuration, then
