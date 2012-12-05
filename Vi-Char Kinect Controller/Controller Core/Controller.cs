@@ -235,12 +235,21 @@ namespace Controller_Core
         // Connects to the controller frontend
         private void CreateServerPipe()
         {
-            if (serverPipe != null)
-                serverPipe.Close();
-            serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
-            serverPipe.WaitForConnection();
-            serverPipeWriter = new StreamWriter(serverPipe);
-            serverPipeWriter.AutoFlush = true;
+            try
+            {
+                Console.WriteLine("Creating a new Pipe to Client...");
+                if (serverPipe != null)
+                {
+                    Console.WriteLine("Closing previous Pipe...");
+                    serverPipe.Close();
+                }
+                serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
+                serverPipe.WaitForConnection();
+                serverPipeWriter = new StreamWriter(serverPipe);
+                serverPipeWriter.AutoFlush = true;
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
+            
         }
 
         // This method is wired up to the event framework to send controller events to the frontend
@@ -250,6 +259,7 @@ namespace Controller_Core
             {
                 try
                 {
+                    Console.WriteLine("Sending: " + type);
                     serverPipeWriter.WriteLine(type);
                 }
                 catch (IOException e) { Console.WriteLine(e.Message); CreateServerPipe(); }
