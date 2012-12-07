@@ -18,7 +18,6 @@ namespace Controller_Core
         private SpeechRecognizer speechManager;
 
         private NamedPipeServerStream serverPipe;
-        private StreamWriter serverPipeWriter;
 
         private List<Player> allPlayers = new List<Player> { new PlayerOne(), new PlayerTwo() };
         private Dictionary<int, GestureMapState> gestureMaps;
@@ -48,8 +47,6 @@ namespace Controller_Core
 
         protected virtual void Dispose(bool disposing)
         {
-            if (serverPipeWriter != null)
-                serverPipeWriter.Dispose();
             if (serverPipe != null)
                 serverPipe.Dispose();
         }
@@ -75,12 +72,12 @@ namespace Controller_Core
 
         private void registerGestureControllerStates(GestureMapState state)
         {
-            state.RegisterGestureResult(x => SendEventThroughPipe(((ViCharGesture)x).ToString()));
+            state.RegisterGestureResult(x => SendEventThroughPipe( ViCharConversion.GestureToByte( (ViCharGesture)x ) ) );
         }
 
         private void registerVoiceControllerStates(SpeechRecognizer speechEngine)
         {
-            speechEngine.RegisterVoiceActionResult(x => SendEventThroughPipe(((ViCharVoiceAction)x).ToString()));
+            speechEngine.RegisterVoiceActionResult(x => SendEventThroughPipe( ViCharConversion.ActionToByte( (ViCharVoiceAction)x ) ) );
         }
         #endregion
 
@@ -245,22 +242,20 @@ namespace Controller_Core
                 }
                 serverPipe = new NamedPipeServerStream("viCharControllerPipe", PipeDirection.Out);
                 serverPipe.WaitForConnection();
-                serverPipeWriter = new StreamWriter(serverPipe);
-                serverPipeWriter.AutoFlush = true;
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
             
         }
 
         // This method is wired up to the event framework to send controller events to the frontend
-        private void SendEventThroughPipe(string type)
+        private void SendEventThroughPipe(Byte type)
         {
-            if (serverPipe.IsConnected && serverPipeWriter != null)
+            if (serverPipe.IsConnected)
             {
                 try
                 {
                     Console.WriteLine("Sending: " + type);
-                    serverPipeWriter.WriteLine(type);
+                    serverPipe.WriteByte(type);
                 }
                 catch (IOException e) { Console.WriteLine(e.Message); CreateServerPipe(); }
             }
