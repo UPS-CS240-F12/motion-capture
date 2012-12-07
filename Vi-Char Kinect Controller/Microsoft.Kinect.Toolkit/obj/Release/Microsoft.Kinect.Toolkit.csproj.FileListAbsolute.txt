@@ -5,3 +5,10 @@ C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controlle
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.dll
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.pdb
 C:\Users\max\Desktop\motion-capture-repo\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.csprojResolveAssemblyReference.cache
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\bin\Release\Microsoft.Kinect.Toolkit.dll
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\bin\Release\Microsoft.Kinect.Toolkit.pdb
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.csprojResolveAssemblyReference.cache
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.Properties.Resources.resources
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.csproj.GenerateResource.Cache
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.dll
+C:\Users\max\Documents\GitHub\motion-capture\Vi-Char Kinect Controller\Microsoft.Kinect.Toolkit\obj\Release\Microsoft.Kinect.Toolkit.pdb
